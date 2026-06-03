@@ -59,7 +59,7 @@ export default async function CustomerDetailPage({ params }) {
         </Link>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mb-6">
         {/* Customer Info */}
         <div className="col-span-2 bg-white border border-gray-200 rounded-xl p-5">
           <h2 className="text-sm font-semibold text-gray-900 mb-4">Customer Details</h2>
@@ -70,7 +70,7 @@ export default async function CustomerDetailPage({ params }) {
             </div>
             <div>
               <dt className="text-gray-500 mb-1">Email</dt>
-              <dd className="font-medium text-gray-900">{customer.email || '—'}</dd>
+              <dd className="font-medium text-gray-900 overflow-hidden text-ellipsis">{customer.email || '—'}</dd>
             </div>
             <div>
               <dt className="text-gray-500 mb-1">Assigned Agent</dt>
@@ -127,32 +127,46 @@ export default async function CustomerDetailPage({ params }) {
         {bookings.length === 0 ? (
           <div className="py-12 text-center text-sm text-gray-400">No bookings yet</div>
         ) : (
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">PNR</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Airline</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Travel Date</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Payment</th>
-                <th className="px-4 py-3" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {bookings.map((b) => (
-                <tr key={b._id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-mono text-gray-900">{b.pnr || '—'}</td>
-                  <td className="px-4 py-3 text-gray-700">{b.airline || '—'}</td>
-                  <td className="px-4 py-3 text-gray-600">{b.travelDate ? new Date(b.travelDate).toLocaleDateString() : '—'}</td>
-                  <td className="px-4 py-3"><BookingStatusBadge status={b.status} /></td>
-                  <td className="px-4 py-3"><PaymentStatusBadge status={b.payment?.status} /></td>
-                  <td className="px-4 py-3 text-right">
-                    <Link href={`/bookings/${b._id}/edit`} className="text-blue-600 hover:text-blue-700 text-xs font-medium">Edit →</Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+         <div className="max-h-[500px] overflow-y-auto border border-gray-200 rounded-lg">
+  <table className="w-full text-sm">
+    <thead className="sticky top-0 bg-gray-50 z-10">
+      <tr className="border-b border-gray-200">
+        <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">PNR</th>
+        <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Airline</th>
+        <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Travel Date</th>
+        <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
+        <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Payment</th>
+        <th className="px-4 py-3" />
+      </tr>
+    </thead>
+
+    <tbody className="divide-y divide-gray-100">
+      {bookings.map((b) => (
+        <tr key={b._id} className="hover:bg-gray-50">
+          <td className="px-4 py-3 font-mono text-gray-900">{b.pnr || '—'}</td>
+          <td className="px-4 py-3 text-gray-700">{b.airline || '—'}</td>
+          <td className="px-4 py-3 text-gray-600">
+            {b.travelDate ? new Date(b.travelDate).toLocaleDateString() : '—'}
+          </td>
+          <td className="px-4 py-3">
+            <BookingStatusBadge status={b.status} />
+          </td>
+          <td className="px-4 py-3">
+            <PaymentStatusBadge status={b.payment?.status} />
+          </td>
+          <td className="px-4 py-3 text-right">
+            <Link
+              href={`/bookings/${b._id}/edit`}
+              className="text-blue-600 hover:text-blue-700 text-xs font-medium"
+            >
+              Edit →
+            </Link>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
         )}
       </div>
     </div>
