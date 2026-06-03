@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -30,9 +30,9 @@ export default function Sidebar({ user }) {
 
   return (
     <aside
-      className={`relative flex flex-col bg-white border-r border-gray-200 transition-all duration-300 ${
+      className={`relative flex-col bg-white border-r border-gray-200 transition-all duration-300 ${
         collapsed ? 'w-16' : 'w-56'
-      } min-h-screen`}
+      } min-h-screen hidden md:flex`}
     >
       {/* Logo */}
       <div className={`flex items-center gap-2 px-4 py-5 border-b border-gray-200 ${collapsed ? 'justify-center' : ''}`}>
@@ -70,7 +70,7 @@ export default function Sidebar({ user }) {
       {/* Collapse toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3 top-20 flex items-center justify-center w-6 h-6 bg-white border border-gray-200 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors shadow-sm"
+        className="absolute -right-3 top-20 flex items-center justify-center w-6 h-6 bg-white border border-gray-200 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
         title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
       >
         {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}

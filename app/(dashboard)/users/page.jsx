@@ -97,7 +97,7 @@ export default function UsersPage() {
             <p className="text-sm">No users found</p>
           </div>
         ) : (
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto"><table className="w-full text-sm min-w-[640px]">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
                 <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Name</th>
@@ -120,16 +120,37 @@ export default function UsersPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-500">{new Date(u.createdAt).toLocaleDateString()}</td>
-                  <td className="px-4 py-3 text-right flex items-center justify-end gap-3">
-                    <button onClick={() => openEdit(u)} className="text-blue-600 hover:text-blue-700 text-xs font-medium">Edit</button>
-                    <button onClick={() => handleToggleActive(u)} className="text-gray-500 hover:text-gray-700 text-xs font-medium">
-                      {u.isActive ? 'Deactivate' : 'Activate'}
-                    </button>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-2">
+                      {/* Edit button */}
+                      <button
+                        onClick={() => openEdit(u)}
+                        className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700 ring-1 ring-blue-200 hover:bg-blue-100 transition-colors cursor-pointer"
+                      >
+                        Edit
+                      </button>
+                      {/* Deactivate / Activate button — visually distinct */}
+                      {u.isActive ? (
+                        <button
+                          onClick={() => handleToggleActive(u)}
+                          className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-red-50 text-red-700 ring-1 ring-red-200 hover:bg-red-100 transition-colors cursor-pointer"
+                        >
+                          Deactivate
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleToggleActive(u)}
+                          className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700 ring-1 ring-green-200 hover:bg-green-100 transition-colors cursor-pointer"
+                        >
+                          Activate
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         )}
       </div>
 

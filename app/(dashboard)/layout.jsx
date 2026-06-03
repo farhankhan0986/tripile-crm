@@ -5,6 +5,7 @@ import dbConnect from '@/lib/db';
 import User from '@/models/User';
 import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
+import MobileNav from '@/components/layout/MobileNav';
 
 async function getCurrentUser() {
   const cookieStore = await cookies();
@@ -30,10 +31,13 @@ export default async function DashboardLayout({ children }) {
       <Sidebar user={user} />
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopBar user={user} />
-        <main className="flex-1 overflow-y-auto p-6">
+        {/* Extra bottom padding on mobile so content isn't hidden behind the nav bar */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 pb-20 md:pb-6">
           {children}
         </main>
       </div>
+      {/* Mobile bottom navigation — only visible on screens < md */}
+      <MobileNav user={user} />
     </div>
   );
 }
