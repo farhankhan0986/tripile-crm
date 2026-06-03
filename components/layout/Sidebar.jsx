@@ -11,7 +11,7 @@ import {
   ClipboardList,
   ChevronLeft,
   ChevronRight,
-  Plane,
+  Compass,
 } from 'lucide-react';
 
 const navItems = [
@@ -36,8 +36,8 @@ export default function Sidebar({ user }) {
     >
       {/* Logo */}
       <div className={`flex items-center gap-2 px-4 py-5 border-b border-gray-200 ${collapsed ? 'justify-center' : ''}`}>
-        <div className="flex items-center justify-center w-8 h-8 bg-blue-600 rounded-lg flex-shrink-0">
-          <Plane className="text-white" size={16} />
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg flex-shrink-0" style={{ background: '#1e293b' }}>
+          <Compass size={15} color="#f8fafc" strokeWidth={1.75} />
         </div>
         {!collapsed && (
           <span className="font-semibold text-gray-900 text-sm whitespace-nowrap">Tripile CRM</span>
@@ -56,8 +56,8 @@ export default function Sidebar({ user }) {
               title={collapsed ? item.label : undefined}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 active
-                  ? 'bg-blue-50 text-blue-700'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  ? 'bg-slate-100 text-slate-900'
+                  : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
               } ${collapsed ? 'justify-center' : ''}`}
             >
               <Icon size={18} className="flex-shrink-0" />

@@ -71,7 +71,7 @@ export default function MobileNav({ user }) {
             top: 0; left: 50%;
             transform: translateX(-50%);
             width: 32px; height: 3px;
-            background: #2563eb;
+            background: #1e293b;
             border-radius: 0 0 4px 4px;
           }
         }
@@ -89,7 +89,7 @@ export default function MobileNav({ user }) {
               key={item.href}
               href={item.href}
               className={`mobile-nav-item${active ? ' active' : ''}`}
-              style={{ color: active ? '#2563eb' : '#9ca3af' }}
+              style={{ color: active ? '#1e293b' : '#9ca3af' }}
             >
               <Icon size={20} className="nav-icon" />
               <span className="nav-label">{item.label}</span>

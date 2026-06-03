@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
-import { LogOut, User, Plane } from 'lucide-react';
+import { LogOut, User, Compass } from 'lucide-react';
 
 const roleLabels = {
   super_admin: 'Super Admin',
@@ -37,8 +37,8 @@ export default function TopBar({ user }) {
     <header className="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-6">
       {/* Mobile: logo + page title | Desktop: empty left side */}
       <div className="flex items-center gap-2 md:hidden">
-        <div className="flex items-center justify-center w-7 h-7 bg-blue-600 rounded-lg">
-          <Plane className="text-white" size={13} />
+        <div className="flex items-center justify-center w-7 h-7 rounded-lg" style={{ background: '#1e293b' }}>
+          <Compass size={13} color="#f8fafc" strokeWidth={1.75} />
         </div>
         <span className="font-semibold text-gray-900 text-sm">{pageTitle}</span>
       </div>
@@ -47,8 +47,8 @@ export default function TopBar({ user }) {
       {/* Right side: user info + logout */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2 text-sm text-gray-700">
-          <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center">
-            <User size={14} className="text-blue-600" />
+          <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center">
+            <User size={14} className="text-slate-500" />
           </div>
           <div className="flex flex-col leading-none">
             <span className="font-medium text-gray-900">{user?.name}</span>
