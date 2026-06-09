@@ -60,6 +60,8 @@ export async function POST(request) {
 
     if (!customer) return NextResponse.json({ error: 'Customer is required' }, { status: 400 });
 
+    // All roles can submit notes and payment when CREATING a booking (write-once).
+    // After creation, agents cannot VIEW these fields — enforced on the read side.
     const booking = await Booking.create({
       customer,
       airline,
@@ -90,3 +92,5 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
+
+

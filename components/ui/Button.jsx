@@ -1,5 +1,5 @@
 const variants = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700 border border-transparent',
+  primary: 'bg-[#1e293b] text-white hover:bg-[#0f172a] border border-transparent',
   secondary: 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50',
   danger: 'bg-red-600 text-white hover:bg-red-700 border border-transparent',
   ghost: 'bg-transparent text-gray-600 border border-transparent hover:bg-gray-100',
@@ -23,7 +23,7 @@ export default function Button({
   return (
     <button
       disabled={disabled || loading}
-      className={`inline-flex items-center gap-2 font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${variants[variant]} ${sizes[size]} ${className}`}
+      className={`inline-flex items-center gap-2 font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${variants[variant]} ${sizes[size]} ${className}`}
       {...props}
     >
       {loading && (

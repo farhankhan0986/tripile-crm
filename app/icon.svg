@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Dark slate rounded square background matching #1e293b with rounded-lg (border-radius ~6px at this scale) -->
+  <rect width="32" height="32" rx="7" fill="#1e293b"/>
+
+  <!-- Lucide Compass icon, centered at (16,16), scaled to fit 15px logical in a 32px canvas -->
+  <!-- Original Lucide compass viewBox is 24x24, scaled to ~15px = 0.625x, centered -->
+  <!-- Transform: translate to center (16,16), scale 0.625, then offset by -12,-12 (half of 24) -->
+  <g transform="translate(16,16) scale(0.635) translate(-12,-12)" stroke="#f8fafc" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Outer circle -->
+    <circle cx="12" cy="12" r="10"/>
+    <!-- Compass needle: north-east arrow (filled white) and south-west arrow -->
+    <!-- Lucide compass uses polygon: "16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" -->
+    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="#f8fafc" stroke="#f8fafc" stroke-width="1.75"/>
+  </g>
+</svg>

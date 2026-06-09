@@ -42,6 +42,7 @@ export default async function EditBookingPage({ params }) {
           initial={JSON.parse(JSON.stringify(booking))}
           customers={JSON.parse(JSON.stringify(customers))}
           bookingId={id}
+          currentRole={decoded?.role}
         />
       </div>
     </div>

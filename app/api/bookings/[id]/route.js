@@ -55,20 +55,27 @@ export async function PUT(request, { params }) {
       }
     }
 
+    // Agents cannot update payment details or sensitive notes
+    const updateData = {
+      customer,
+      airline,
+      pnr,
+      travelDate,
+      status,
+    };
+
+    // Only super_admin and manager can edit payment details and notes
+    if (decoded.role !== 'agent') {
+      updateData.notes = notes;
+      updateData['payment.status'] = payment?.status;
+      updateData['payment.transactionId'] = payment?.transactionId;
+      updateData['payment.gatewayName'] = payment?.gatewayName;
+      updateData['payment.last4Digits'] = payment?.last4Digits;
+    }
+
     const updated = await Booking.findByIdAndUpdate(
       id,
-      {
-        customer,
-        airline,
-        pnr,
-        travelDate,
-        status,
-        notes,
-        'payment.status': payment?.status,
-        'payment.transactionId': payment?.transactionId,
-        'payment.gatewayName': payment?.gatewayName,
-        'payment.last4Digits': payment?.last4Digits,
-      },
+      updateData,
       { new: true, runValidators: true }
     ).populate('customer', 'name phone email');
 
@@ -86,3 +93,38 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
+
+export async function DELETE(request, { params }) {
+  try {
+    const token = getTokenFromRequest(request);
+    const decoded = verifyToken(token);
+    if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    // Agents cannot delete bookings
+    if (decoded.role === 'agent') {
+      return NextResponse.json({ error: 'Agents cannot delete bookings.' }, { status: 403 });
+    }
+
+    await dbConnect();
+    const { id } = await params;
+
+    const booking = await Booking.findById(id).populate('customer', 'name');
+    if (!booking) return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+
+    await Booking.findByIdAndDelete(id);
+
+    await createAuditLog({
+      action: 'booking_updated',
+      performedBy: decoded.id,
+      targetId: id,
+      targetModel: 'Booking',
+      meta: { deleted: true, pnr: booking.pnr, customer: booking.customer?.name },
+    });
+
+    return NextResponse.json({ message: 'Booking deleted successfully.' });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
+}
+

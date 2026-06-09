@@ -8,6 +8,7 @@ import { verifyToken } from "@/lib/auth";
 import { BookingStatusBadge, PaymentStatusBadge } from "@/components/ui/Badge";
 import { Edit, Plus } from "lucide-react";
 import Button from "@/components/ui/Button";
+import CustomerDetailClient from "@/components/ui/CustomerDetailClient";
 
 async function getCustomer(id, userId, role) {
   await dbConnect();
@@ -39,6 +40,13 @@ export default async function CustomerDetailPage({ params }) {
 
   const bookings = await getBookings(id);
 
+  const isSuperAdmin = decoded?.role === 'super_admin';
+  const canArchiveOrDelete = decoded?.role === 'super_admin' || decoded?.role === 'manager';
+
+  // Serialize for client components
+  const serializedCustomer = JSON.parse(JSON.stringify(customer));
+  const serializedBookings = JSON.parse(JSON.stringify(bookings));
+
   return (
     <div className="max-w-4xl">
       <div className="flex items-center justify-between mb-6">
@@ -50,9 +58,16 @@ export default async function CustomerDetailPage({ params }) {
             <span>/</span>
             <span className="text-gray-900">{customer.name}</span>
           </div>
-          <h1 className="text-xl font-semibold text-gray-900">
-            {customer.name}
-          </h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl font-semibold text-gray-900">
+              {customer.name}
+            </h1>
+            {customer.status === 'archived' && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-600 ring-1 ring-gray-200">
+                Archived
+              </span>
+            )}
+          </div>
         </div>
         <Link href={`/customers/${id}/edit`}>
           <Button variant="secondary" size="sm">
@@ -62,7 +77,7 @@ export default async function CustomerDetailPage({ params }) {
         </Link>
       </div>
 
-      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mb-6">
+      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mb-4">
         {/* Customer Info */}
         <div className="col-span-2 bg-white border border-gray-200 rounded-xl p-5">
           <h2 className="text-sm font-semibold text-gray-900 mb-4">
@@ -71,14 +86,24 @@ export default async function CustomerDetailPage({ params }) {
           <dl className="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
             <div>
               <dt className="text-gray-500 mb-1">Phone</dt>
-              <dd className="font-medium text-gray-900">
-                {customer.phone || "—"}
+              <dd className="font-medium text-gray-900 flex items-center gap-2">
+                {customer.phone || (
+                  <span className="flex items-center gap-1 text-orange-600 text-xs">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange-400" />
+                    Missing Phone
+                  </span>
+                )}
               </dd>
             </div>
             <div>
               <dt className="text-gray-500 mb-1">Email</dt>
-              <dd className="font-medium text-gray-900 overflow-hidden text-ellipsis">
-                {customer.email || "—"}
+              <dd className="font-medium text-gray-900 overflow-hidden text-ellipsis flex items-center gap-2">
+                {customer.email || (
+                  <span className="flex items-center gap-1 text-orange-600 text-xs">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange-400" />
+                    Missing Email
+                  </span>
+                )}
               </dd>
             </div>
             <div>
@@ -140,6 +165,18 @@ export default async function CustomerDetailPage({ params }) {
         </div>
       </div>
 
+      {/* Sensitive Information — client component handles role-based display */}
+      <div className="mb-4">
+        <CustomerDetailClient
+          customerId={id}
+          isSuperAdmin={isSuperAdmin}
+          canArchiveOrDelete={canArchiveOrDelete}
+          customerStatus={customer.status}
+          customerName={customer.name}
+          currentRole={decoded?.role}
+        />
+      </div>
+
       {/* Bookings */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
@@ -160,45 +197,24 @@ export default async function CustomerDetailPage({ params }) {
             <table className="w-full text-sm">
               <thead className="sticky top-0 bg-gray-50 z-10">
                 <tr className="border-b border-gray-200">
-                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
-                    PNR
-                  </th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
-                    Airline
-                  </th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
-                    Travel Date
-                  </th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
-                    Status
-                  </th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">
-                    Payment
-                  </th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">PNR</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Airline</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Travel Date</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Payment</th>
                   <th className="px-4 py-3" />
                 </tr>
               </thead>
-
               <tbody className="divide-y divide-gray-100">
                 {bookings.map((b) => (
                   <tr key={b._id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 font-mono text-gray-900">
-                      {b.pnr || "—"}
-                    </td>
-                    <td className="px-4 py-3 text-gray-700">
-                      {b.airline || "—"}
-                    </td>
+                    <td className="px-4 py-3 font-mono text-gray-900">{b.pnr || "—"}</td>
+                    <td className="px-4 py-3 text-gray-700">{b.airline || "—"}</td>
                     <td className="px-4 py-3 text-gray-600">
-                      {b.travelDate
-                        ? new Date(b.travelDate).toLocaleDateString()
-                        : "—"}
+                      {b.travelDate ? new Date(b.travelDate).toLocaleDateString() : "—"}
                     </td>
-                    <td className="px-4 py-3">
-                      <BookingStatusBadge status={b.status} />
-                    </td>
-                    <td className="px-4 py-3">
-                      <PaymentStatusBadge status={b.payment?.status} />
-                    </td>
+                    <td className="px-4 py-3"><BookingStatusBadge status={b.status} /></td>
+                    <td className="px-4 py-3"><PaymentStatusBadge status={b.payment?.status} /></td>
                     <td className="px-4 py-3 text-right">
                       <Link
                         href={`/bookings/${b._id}/edit`}

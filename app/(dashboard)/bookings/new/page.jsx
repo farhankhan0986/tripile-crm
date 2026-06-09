@@ -31,7 +31,7 @@ export default async function NewBookingPage({ searchParams }) {
         <p className="text-sm text-gray-500 mt-1">Create a new flight booking</p>
       </div>
       <div className="bg-white border border-gray-200 rounded-xl p-6">
-        <BookingForm customers={serialized} initial={initial} />
+        <BookingForm customers={serialized} initial={initial} currentRole={decoded?.role} />
       </div>
     </div>
   );
