@@ -5,6 +5,23 @@
   --foreground: #0f172a;
 }
 
+/* Chrome, Safari, Edge, Opera */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+/* Firefox */
+html,
+body,
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
 * {
   box-sizing: border-box;
 }

@@ -10,13 +10,17 @@ import Input, { Select } from '@/components/ui/Input';
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editUser, setEditUser] = useState(null);
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'agent' });
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => { fetchUsers(); }, []);
+  useEffect(() => {
+    fetchUsers();
+    fetch('/api/auth/me').then(r => r.json()).then(d => setCurrentUser(d.user || null));
+  }, []);
 
   async function fetchUsers() {
     const res = await fetch('/api/users');
@@ -129,21 +133,23 @@ export default function UsersPage() {
                       >
                         Edit
                       </button>
-                      {/* Deactivate / Activate button — visually distinct */}
-                      {u.isActive ? (
-                        <button
-                          onClick={() => handleToggleActive(u)}
-                          className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-red-50 text-red-700 ring-1 ring-red-200 hover:bg-red-100 transition-colors cursor-pointer"
-                        >
-                          Deactivate
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => handleToggleActive(u)}
-                          className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700 ring-1 ring-green-200 hover:bg-green-100 transition-colors cursor-pointer"
-                        >
-                          Activate
-                        </button>
+                      {/* Deactivate / Activate button — hidden for own account */}
+                      {u._id !== currentUser?._id?.toString() && (
+                        u.isActive ? (
+                          <button
+                            onClick={() => handleToggleActive(u)}
+                            className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-red-50 text-red-700 ring-1 ring-red-200 hover:bg-red-100 transition-colors cursor-pointer"
+                          >
+                            Deactivate
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleToggleActive(u)}
+                            className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700 ring-1 ring-green-200 hover:bg-green-100 transition-colors cursor-pointer"
+                          >
+                            Activate
+                          </button>
+                        )
                       )}
                     </div>
                   </td>

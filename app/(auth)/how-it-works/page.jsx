@@ -543,11 +543,11 @@ export default function HowItWorksPage() {
             <h2>Core Modules</h2>
             <p>Everything your travel team needs in one place.</p>
           </div>
-          <div className="features-grid">
-            {features.map((f) => {
+          <div className="features-grid ">
+              {features.map((f) => {
               const Icon = f.Icon;
               return (
-                <div key={f.title} className="feature-card">
+                <div key={f.title} className="feature-card select-none">
                   <div className="feature-icon-wrap">
                     <Icon size={18} color={f.iconColor} strokeWidth={1.75} />
                   </div>
@@ -664,7 +664,7 @@ export default function HowItWorksPage() {
           </div>
           <div className="workflow-list">
             {workflow.map((item) => (
-              <div key={item.step} className="workflow-item">
+              <div key={item.step} className="workflow-item select-none">
                 <span className="step-num">{item.step}</span>
                 <div className="workflow-dot" />
                 <div className="workflow-content">

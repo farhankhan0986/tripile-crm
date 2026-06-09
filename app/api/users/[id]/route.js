@@ -14,10 +14,13 @@ export async function PUT(request, { params }) {
     const { id } = await params;
     const { name, role, isActive, password } = await request.json();
 
-    const updateData = { name, role, isActive };
-
     const user = await User.findById(id);
     if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+    // Super admin cannot deactivate their own account
+    if (id === decoded.id && typeof isActive === 'boolean' && !isActive) {
+      return NextResponse.json({ error: 'You cannot deactivate your own account.' }, { status: 400 });
+    }
 
     if (name) user.name = name;
     if (role) user.role = role;

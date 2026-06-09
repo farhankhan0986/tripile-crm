@@ -84,7 +84,7 @@ export async function PUT(request, { params }) {
       performedBy: decoded.id,
       targetId: id,
       targetModel: 'Booking',
-      meta: { pnr },
+      meta: { pnr, customer: updated?.customer?.name },
     });
 
     return NextResponse.json({ booking: updated });
@@ -114,11 +114,11 @@ export async function DELETE(request, { params }) {
     await Booking.findByIdAndDelete(id);
 
     await createAuditLog({
-      action: 'booking_updated',
+      action: 'booking_deleted',
       performedBy: decoded.id,
       targetId: id,
       targetModel: 'Booking',
-      meta: { deleted: true, pnr: booking.pnr, customer: booking.customer?.name },
+      meta: { pnr: booking.pnr, customer: booking.customer?.name },
     });
 
     return NextResponse.json({ message: 'Booking deleted successfully.' });

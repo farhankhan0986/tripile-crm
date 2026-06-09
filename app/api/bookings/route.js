@@ -78,12 +78,16 @@ export async function POST(request) {
       createdBy: decoded.id,
     });
 
+    // Resolve customer name for readable audit log
+    const customerDoc = await Customer.findById(customer).select('name').lean();
+    const customerName = customerDoc?.name || customer;
+
     await createAuditLog({
       action: 'booking_created',
       performedBy: decoded.id,
       targetId: booking._id,
       targetModel: 'Booking',
-      meta: { customer, pnr },
+      meta: { customer: customerName, pnr },
     });
 
     return NextResponse.json({ booking }, { status: 201 });
