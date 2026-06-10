@@ -22,6 +22,8 @@ import {
   Archive,
   Trash2,
   ShieldAlert,
+  LockKeyhole,
+  
 } from 'lucide-react';
 
 /* ── Role definitions ─────────────────────────────── */
@@ -137,7 +139,9 @@ const sensitiveFlow = [
     bg: '#f0fdf4',
     border: '#bbf7d0',
     action: 'Enters card number',
-    result: '🔒 Sees "Protected" after saving',
+    result: 'Sees "Protected" after saving',
+    icon: LockKeyhole,
+    iconColor: '#15803d',
   },
   {
     role: 'Manager',
@@ -146,7 +150,9 @@ const sensitiveFlow = [
     bg: '#eff6ff',
     border: '#bfdbfe',
     action: 'Opens customer profile',
-    result: '🔒 Always sees "Protected"',
+    result: 'Always sees "Protected"',
+    icon: LockKeyhole,
+    iconColor: '#1d4ed8',
   },
   {
     role: 'Super Admin',
@@ -155,7 +161,9 @@ const sensitiveFlow = [
     bg: '#faf5ff',
     border: '#e9d5ff',
     action: 'Opens customer profile',
-    result: '👁 Clicks Reveal → sees actual value',
+    result: 'Clicks Reveal → sees actual value',
+    icon: Eye,
+    iconColor: '#7c3aed',
   },
 ];
 
@@ -608,7 +616,7 @@ export default function HowItWorksPage() {
         {/* Sensitive Data Security */}
         <section className="section">
           <div className="section-heading">
-            <h2>🔒 Sensitive Data Security</h2>
+            <h2 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Lock size={17} strokeWidth={2} color="#d97706" /> Sensitive Data Security</h2>
             <p>
               Card numbers, passport numbers, government IDs, and sensitive notes are encrypted with AES-256-GCM before storage.
               Access is strictly role-controlled — agents can only write, never read.
@@ -628,7 +636,10 @@ export default function HowItWorksPage() {
                   </div>
                   <div className="sensitive-body">
                     <div style={{ marginBottom: '0.375rem', color: '#475569' }}>Action: <strong>{item.action}</strong></div>
-                    <div className="sensitive-result">{item.result}</div>
+                    <div className="sensitive-result" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      {(() => { const ResultIcon = item.icon; return <ResultIcon size={13} strokeWidth={2} color={item.iconColor} />; })()}
+                      {item.result}
+                    </div>
                   </div>
                 </div>
               );
