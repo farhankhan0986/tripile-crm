@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ClipboardList, LogIn, UserPlus, Pencil, Trash2, Archive, Eye, CreditCard, RotateCcw } from 'lucide-react';
+import { ClipboardList, LogIn, UserPlus, Pencil, Trash2, Archive, Eye, CreditCard, RotateCcw, CheckSquare, CheckCircle2, StickyNote } from 'lucide-react';
 
 // ─── Action config ──────────────────────────────────────────────────────────
 const ACTION_CONFIG = {
@@ -82,6 +82,41 @@ const ACTION_CONFIG = {
     row: '',
     dot: 'bg-gray-400',
   },
+  task_created: {
+    label: 'Task Created',
+    icon: CheckSquare,
+    badge: 'bg-teal-100 text-teal-700 ring-1 ring-teal-200',
+    row: '',
+    dot: 'bg-teal-400',
+  },
+  task_updated: {
+    label: 'Task Updated',
+    icon: Pencil,
+    badge: 'bg-cyan-100 text-cyan-700 ring-1 ring-cyan-200',
+    row: '',
+    dot: 'bg-cyan-400',
+  },
+  task_completed: {
+    label: 'Task Completed',
+    icon: CheckCircle2,
+    badge: 'bg-green-100 text-green-700 ring-1 ring-green-200',
+    row: 'bg-green-50/40',
+    dot: 'bg-green-500',
+  },
+  task_note_added: {
+    label: 'Note Added',
+    icon: StickyNote,
+    badge: 'bg-yellow-100 text-yellow-700 ring-1 ring-yellow-200',
+    row: '',
+    dot: 'bg-yellow-400',
+  },
+  task_deleted: {
+    label: 'Task Deleted',
+    icon: Trash2,
+    badge: 'bg-red-100 text-red-700 ring-1 ring-red-200',
+    row: 'bg-red-50',
+    dot: 'bg-red-500',
+  },
 };
 
 const DEFAULT_CONFIG = {
@@ -99,6 +134,10 @@ const META_KEY_LABELS = {
   pnr: 'PNR',
   permanent: 'Permanent',
   statusChange: 'Status Changed To',
+  title: 'Task',
+  assignedTo: 'Assigned To',
+  status: 'Status',
+  priority: 'Priority',
 };
 
 function formatMetaValue(key, value) {
@@ -177,6 +216,7 @@ export default function AuditLogsPage() {
           { color: 'bg-orange-400', label: 'Archive' },
           { color: 'bg-emerald-400', label: 'Create' },
           { color: 'bg-amber-400', label: 'Update' },
+          { color: 'bg-teal-400', label: 'Task' },
           { color: 'bg-blue-400', label: 'Login' },
         ].map(({ color, label }) => (
           <span key={label} className="inline-flex items-center gap-1.5 text-xs text-gray-500">

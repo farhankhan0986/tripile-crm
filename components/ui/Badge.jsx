@@ -46,3 +46,23 @@ export function RoleBadge({ role }) {
   const { color, label } = map[role] || { color: 'gray', label: role };
   return <Badge color={color}>{label}</Badge>;
 }
+
+export function TaskStatusBadge({ status }) {
+  const map = {
+    pending: { color: 'yellow', label: 'Pending' },
+    completed: { color: 'green', label: 'Completed' },
+  };
+  const { color, label } = map[status] || { color: 'gray', label: status };
+  return <Badge color={color}>{label}</Badge>;
+}
+
+export function PriorityBadge({ priority }) {
+  const map = {
+    low: { color: 'gray', label: 'Low' },
+    medium: { color: 'blue', label: 'Medium' },
+    high: { color: 'red', label: 'High' },
+  };
+  const { color, label } = map[priority] || { color: 'gray', label: priority };
+  return <Badge color={color}>{label}</Badge>;
+}
+

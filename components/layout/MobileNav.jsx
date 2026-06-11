@@ -8,14 +8,16 @@ import {
   BookOpen,
   Shield,
   ClipboardList,
+  CheckSquare,
 } from 'lucide-react';
 
 const navItems = [
   { href: '/',           label: 'Dashboard', icon: LayoutDashboard, roles: ['super_admin', 'manager', 'agent'] },
   { href: '/customers',  label: 'Customers',  icon: Users,           roles: ['super_admin', 'manager', 'agent'] },
   { href: '/bookings',   label: 'Bookings',   icon: BookOpen,        roles: ['super_admin', 'manager', 'agent'] },
+  { href: '/tasks',      label: 'Tasks',      icon: CheckSquare,     roles: ['super_admin', 'manager', 'agent'] },
   { href: '/users',      label: 'Users',      icon: Shield,          roles: ['super_admin'] },
-  { href: '/audit-logs', label: 'Audit',      icon: ClipboardList,   roles: ['super_admin'] },
+  { href: '/audit-logs', label: 'Logs',      icon: ClipboardList,   roles: ['super_admin'] },
 ];
 
 export default function MobileNav({ user }) {
